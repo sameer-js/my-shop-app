@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import './globals.css';
 import NavBar from './components/nav/NavBar';
 import Footer from './components/footer/Footer';
+// import { getServerSession } from 'next-auth';
 
 const poppins = Poppins({ subsets: ['latin'], weight: ['400', '700'] });
 
@@ -12,11 +13,13 @@ export const metadata: Metadata = {
     'NextJS app to display mock data as a simulation of an ecommerce site (assignment by Grepsr)',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const session = await getServerSession();
+
   return (
     <html lang='en'>
       <body className={`${poppins.className} text-slate-800`}>

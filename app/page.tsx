@@ -1,19 +1,19 @@
-import { products } from '@/utils/products';
 import Container from './components/container/Container';
 import HeroBanner from './components/hero/HeroBanner';
-import { cutText } from '@/utils/cutText';
-import ProductCard from './components/card/ProductCard';
+import MainPage from './components/product/MainPage';
 
-export default function Home() {
+export default async function Home() {
+  const response = await fetch('https://dummyjson.com/products', {
+    cache: 'no-store',
+  });
+  const data = await response.json();
+  const products = data.products;
+
   return (
     <div className='p-8'>
       <Container>
         <HeroBanner />
-        <div className='grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-8'>
-          {products.map((product: any) => {
-            return <ProductCard key={product.id} data={product} />;
-          })}
-        </div>
+        <MainPage data={products} />
       </Container>
     </div>
   );

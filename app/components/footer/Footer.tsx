@@ -11,7 +11,7 @@ const libre = Libre_Barcode_39_Text({ subsets: ['latin'], weight: ['400'] });
 
 function Footer() {
   return (
-    <footer className='bg-black text-white mt-16 py-8'>
+    <footer className='bg-black text-white mt-8 py-8'>
       <Container>
         <div className='flex justify-between items-center gap-3'>
           <Link href='/' className={`${libre.className}  md:text-4xl text-3xl`}>
@@ -21,13 +21,13 @@ function Footer() {
             &copy; {new Date().getFullYear()} My Shop. All Rights Reserved
           </div>
           <div className='flex gap-10'>
-            <Link href='/'>
+            <Link href='#'>
               <AiFillFacebook size={28} />
             </Link>
-            <Link href='/'>
+            <Link href='#'>
               <AiOutlineInstagram size={28} />
             </Link>
-            <Link href='/'>
+            <Link href='#'>
               <AiOutlineTwitter size={28} />
             </Link>
           </div>

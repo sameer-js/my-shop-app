@@ -12,7 +12,7 @@ interface UpdateQuantityProps {
 }
 
 const buttonStyles =
-  'border-[1.2px] border-slate-300 px-2 rounded hover:bg-gray-200';
+  'border-[1.2px] border-slate-300 px-2 rounded hover:bg-gray-200 disabled:cursor-not-allowed';
 
 const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
   cartCounter,
@@ -24,11 +24,19 @@ const UpdateQuantity: React.FC<UpdateQuantityProps> = ({
     <div className='flex gap-8 items-center'>
       {cartCounter ? null : <div className='font-semibold'>Quantity:</div>}
       <div className='flex gap-4 items-center text-base'>
-        <button className={buttonStyles} onClick={handleDec}>
+        <button
+          className={buttonStyles}
+          onClick={handleDec}
+          disabled={cartProduct.quantity == 1}
+        >
           -
         </button>
         <div>{cartProduct.quantity}</div>
-        <button className={buttonStyles} onClick={handleInc}>
+        <button
+          className={buttonStyles}
+          onClick={handleInc}
+          disabled={cartProduct.quantity == cartProduct.stock}
+        >
           +
         </button>
       </div>

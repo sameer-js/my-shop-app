@@ -1,74 +1,83 @@
 'use client';
 
-import Link from 'next/link';
 import { useCallback, useState } from 'react';
-import { FaCartPlus, FaStar } from 'react-icons/fa6';
+import { FaStar } from 'react-icons/fa6';
 import UpdateQuantity from './UpdateQuantity';
+import Button from '../button/Button';
+import ProductImage from './ProductImage';
 
 interface ProductDetailsProps {
   product: any;
 }
 
-export type ImageType = {
-  image: string;
-};
-
 export type CartProductType = {
   id: string;
-  name: string;
+  title: string;
   description: string;
   category: string;
   brand: string;
-  image: ImageType;
+  images: string[];
   quantity: number;
   price: number;
+  rating: number;
+  stock: number;
 };
-// image: string[];
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
   const [cartProduct, setCartProduct] = useState<CartProductType>({
     id: product.id,
-    name: product.name,
+    title: product.title,
     description: product.description,
     category: product.category,
     brand: product.brand,
-    image: { ...product.images[0] },
+    images: { ...product.images },
     quantity: 1,
     price: product.price,
+    rating: product.rating,
+    stock: product.stock,
   });
 
   const handleInc = useCallback(() => {
     setCartProduct((prev) => {
-      return { ...prev, quantity: ++prev.quantity };
+      return { ...prev, quantity: prev.quantity + 1 };
     });
   }, []);
 
   const handleDec = useCallback(() => {
     setCartProduct((prev) => {
-      return { ...prev, quantity: --prev.quantity };
+      return { ...prev, quantity: prev.quantity - 1 };
     });
   }, []);
 
   return (
-    <div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
-      <div className=''>Image</div>
+    <div className='grid grid-cols-1 md:grid-cols-2 gap-12 mt-8'>
+      <ProductImage slides={cartProduct.images} />
       <div className='flex flex-col gap-4'>
-        <h2 className='text-3xl font-medium text-slate-800'>{product.name}</h2>
-        <div className='flex gap-5'>
-          <div>{product.category} </div>|{' '}
+        <h2 className='text-3xl font-medium text-slate-800'>{product.title}</h2>
+        <div className='flex gap-5 items-center'>
           <div>
-            {product.brand.charAt(0).toUpperCase() + product.brand.slice(1)}
+            {product.category.charAt(0).toUpperCase() +
+              product.category.slice(1)}{' '}
           </div>
-          | <div className='text-green-500'>In-stock</div>
+          | <div>{product.brand}</div>{' '}
+          <div className='text-green-500 text-sm hidden sm:block'>
+            In-stock ({product.stock})
+          </div>
         </div>
         <div className='flex gap-10 '>
           <div className='text-2xl font-bold text-slate-900'>
-            $ {product.price}
+            $
+            {Math.ceil(
+              product.price - (product.price * product.discountPercentage) / 100
+            )}
+            <span className='pl-2 text-sm text-slate-700 line-through hidden sm:inline'>
+              ${product.price}
+            </span>
           </div>
           <div className='flex gap-2 items-center'>
             <FaStar color='gold' />
             <span className='mr-2 ml-1 rounded bg-yellow-200 px-2 py-0.5 text-xs font-semibold'>
-              {(Math.round(Math.random() * 100) / 10).toFixed(1)}
+              {product.rating.toFixed(1)}
             </span>
           </div>
         </div>
@@ -76,20 +85,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ product }) => {
           <p className='text-lg font-medium mb-1'>Description</p>
           <p className='text-justify leading-relaxed '>{product.description}</p>
         </div>
-        <div>
+        <div className='mt-4'>
           <UpdateQuantity
             cartProduct={cartProduct}
             handleDec={handleDec}
             handleInc={handleInc}
           />
         </div>
-        <Link
-          href='#'
-          className='flex items-center justify-center rounded-md bg-slate-900 sm:px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700 focus:ring-4 focus:ring-blue-300'
-        >
-          <FaCartPlus size={18} />
-          Add to cart
-        </Link>
+        <div className='max-w-80'>
+          <Button label='Add to cart' onClick={() => {}} />
+        </div>
       </div>
     </div>
   );
